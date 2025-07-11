@@ -6,6 +6,18 @@ const Analytics = lazy(() => import('@/app/(admin)/dashboard/analytics/page'));
 const Finance = lazy(() => import('@/app/(admin)/dashboard/finance/page'));
 const Sales = lazy(() => import('@/app/(admin)/dashboard/sales/page'));
 
+// Health Authority Routes
+const CliniciansTable = lazy(() => import('../assets/healthauthorities/CliniciansTable.jsx'));
+const ClinicianList = lazy(() => import('../assets/healthauthorities/ClinicianList.jsx'));
+const DiagnosesTable = lazy(() => import('../assets/healthauthorities/DiagnosesTable.jsx'));
+const Diagnosis = lazy(() => import('../assets/healthauthorities/Diagnosis.jsx'));
+const Drugs = lazy(() => import('../assets/healthauthorities/Drugs.jsx'));
+const DrugsTable = lazy(() => import('../assets/healthauthorities/DrugsTable.jsx'));
+const DrugDetails = lazy(() => import('../assets/healthauthorities/DrugDetails.jsx'));
+const Pharmacies = lazy(() => import('../assets/healthauthorities/Pharmacies.jsx'));
+const Payers = lazy(() => import('../assets/healthauthorities/Payers.jsx'));
+const PayerHACredential = lazy(() => import('../assets/healthauthorities/PayerHACredential.jsx'));
+
 // Apps Routes
 const EcommerceProducts = lazy(() => import('@/app/(admin)/ecommerce/products/page'));
 const EcommerceProductDetails = lazy(() => import('@/app/(admin)/ecommerce/products/[productId]/page'));
@@ -124,431 +136,262 @@ const ResetPassword = lazy(() => import('@/app/(other)/auth/reset-pass/page'));
 const ResetPassword2 = lazy(() => import('@/app/(other)/auth/reset-pass-2/page'));
 const LockScreen = lazy(() => import('@/app/(other)/auth/lock-screen/page'));
 const LockScreen2 = lazy(() => import('@/app/(other)/auth/lock-screen-2/page'));
-const initialRoutes = [{
-  path: '/',
-  name: 'root',
-  element: <Navigate to="/dashboard/analytics" />
-}, {
-  path: '*',
-  name: 'not-found',
-  element: <NotFound />
-}];
-const generalRoutes = [{
-  path: '/dashboard/analytics',
-  name: 'Analytics',
-  element: <Analytics />
-}, {
-  path: '/dashboard/finance',
-  name: 'Finance',
-  element: <Finance />
-}, {
-  path: '/dashboard/sales',
-  name: 'Sales',
-  element: <Sales />
-}];
-const appsRoutes = [{
-  name: 'Products',
-  path: '/ecommerce/products',
-  element: <EcommerceProducts />
-}, {
-  name: 'Product Details',
-  path: '/ecommerce/products/:productId',
-  element: <EcommerceProductDetails />
-}, {
-  name: 'Create Product',
-  path: '/ecommerce/products/create',
-  element: <EcommerceProductCreate />
-}, {
-  name: 'Customers',
-  path: '/ecommerce/customers',
-  element: <EcommerceCustomers />
-}, {
-  name: 'Sellers',
-  path: '/ecommerce/sellers',
-  element: <EcommerceSellers />
-}, {
-  name: 'Orders',
-  path: '/ecommerce/orders',
-  element: <EcommerceOrders />
-}, {
-  name: 'Order Details',
-  path: '/ecommerce/orders/:orderId',
-  element: <EcommerceOrderDetails />
-}, {
-  name: 'Inventory',
-  path: '/ecommerce/inventory',
-  element: <EcommerceInventory />
-}, {
-  name: 'Chat',
-  path: '/apps/chat',
-  element: <Chat />
-}, {
-  name: 'Email',
-  path: '/apps/email',
-  element: <Email />
-}, {
-  name: 'Schedule',
-  path: '/calendar/schedule',
-  element: <Schedule />
-}, {
-  name: 'Integration',
-  path: '/calendar/integration',
-  element: <Integration />
-}, {
-  name: 'Help',
-  path: '/calendar/help',
-  element: <Help />
-}, {
-  name: 'Todo',
-  path: '/apps/todo',
-  element: <Todo />
-}, {
-  name: 'Social',
-  path: '/apps/social',
-  element: <Social />
-}, {
-  name: 'Contacts',
-  path: '/apps/contacts',
-  element: <Contacts />
-}, {
-  name: 'Invoices List',
-  path: '/invoices',
-  element: <Invoices />
-}, {
-  name: 'Invoices Details',
-  path: '/invoices/:invoiceId',
-  element: <InvoiceDetails />
-}];
-const customRoutes = [{
-  name: 'Welcome',
-  path: '/pages/welcome',
-  element: <Welcome />
-}, {
-  name: 'FAQs',
-  path: '/pages/faqs',
-  element: <FAQs />
-}, {
-  name: 'Profile',
-  path: '/pages/profile',
-  element: <Profile />
-}, {
-  name: 'Contact Us',
-  path: '/pages/contact-us',
-  element: <ContactUs />
-}, {
-  name: 'About Us',
-  path: '/pages/about-us',
-  element: <AboutUs />
-}, {
-  name: 'Our Team',
-  path: '/pages/our-team',
-  element: <OurTeam />
-}, {
-  name: 'Timeline',
-  path: '/pages/timeline',
-  element: <TimelinePage />
-}, {
-  name: 'Pricing',
-  path: '/pages/pricing',
-  element: <Pricing />
-}, {
-  name: 'Error 404 Alt',
-  path: '/pages/error-404-alt',
-  element: <NotFoundAdmin />
-}, {
-  name: 'Widgets',
-  path: '/widgets',
-  element: <Widgets />
-}];
-const baseUIRoutes = [{
-  name: 'Accordions',
-  path: '/ui/accordions',
-  element: <Accordions />
-}, {
-  name: 'Alerts',
-  path: '/ui/alerts',
-  element: <Alerts />
-}, {
-  name: 'Avatars',
-  path: '/ui/avatars',
-  element: <Avatars />
-}, {
-  name: 'Badges',
-  path: '/ui/badges',
-  element: <Badges />
-}, {
-  name: 'Breadcrumb',
-  path: '/ui/breadcrumb',
-  element: <Breadcrumb />
-}, {
-  name: 'Buttons',
-  path: '/ui/buttons',
-  element: <Buttons />
-}, {
-  name: 'Cards',
-  path: '/ui/cards',
-  element: <Cards />
-}, {
-  name: 'Carousel',
-  path: '/ui/carousel',
-  element: <Carousel />
-}, {
-  name: 'Collapse',
-  path: '/ui/collapse',
-  element: <Collapse />
-}, {
-  name: 'Dropdowns',
-  path: '/ui/dropdowns',
-  element: <Dropdowns />
-}, {
-  name: 'List Group',
-  path: '/ui/list-group',
-  element: <ListGroup />
-}, {
-  name: 'Modals',
-  path: '/ui/modals',
-  element: <Modals />
-}, {
-  name: 'Tabs',
-  path: '/ui/tabs',
-  element: <Tabs />
-}, {
-  name: 'Offcanvas',
-  path: '/ui/offcanvas',
-  element: <Offcanvas />
-}, {
-  name: 'Pagination',
-  path: '/ui/pagination',
-  element: <Pagination />
-}, {
-  name: 'Placeholders',
-  path: '/ui/placeholders',
-  element: <Placeholders />
-}, {
-  name: 'Popovers',
-  path: '/ui/popovers',
-  element: <Popovers />
-}, {
-  name: 'Progress',
-  path: '/ui/progress',
-  element: <Progress />
-}, {
-  name: 'Spinners',
-  path: '/ui/spinners',
-  element: <Spinners />
-}, {
-  name: 'Toasts',
-  path: '/ui/toasts',
-  element: <Toasts />
-}, {
-  name: 'Tooltips',
-  path: '/ui/tooltips',
-  element: <Tooltips />
-}];
-const advancedUIRoutes = [{
-  name: 'Ratings',
-  path: '/advanced/ratings',
-  element: <Ratings />
-}, {
-  name: 'Sweet Alert',
-  path: '/advanced/alert',
-  element: <SweetAlerts />
-}, {
-  name: 'Swiper Slider',
-  path: '/advanced/swiper',
-  element: <Swiper />
-}, {
-  name: 'Scrollbar',
-  path: '/advanced/scrollbar',
-  element: <Scrollbar />
-}, {
-  name: 'Toastify',
-  path: '/advanced/toastify',
-  element: <Toastify />
-}];
-const chartsNMapsRoutes = [{
-  name: 'Area',
-  path: '/charts/area',
-  element: <Area />
-}, {
-  name: 'Bar',
-  path: '/charts/bar',
-  element: <Bar />
-}, {
-  name: 'Bubble',
-  path: '/charts/bubble',
-  element: <Bubble />
-}, {
-  name: 'Candle Stick',
-  path: '/charts/candlestick',
-  element: <Candlestick />
-}, {
-  name: 'Column',
-  path: '/charts/column',
-  element: <Column />
-}, {
-  name: 'Heatmap',
-  path: '/charts/heatmap',
-  element: <Heatmap />
-}, {
-  name: 'Line',
-  path: '/charts/line',
-  element: <Line />
-}, {
-  name: 'Mixed',
-  path: '/charts/mixed',
-  element: <Mixed />
-}, {
-  name: 'Timeline',
-  path: '/charts/timeline',
-  element: <Timeline />
-}, {
-  name: 'Boxplot',
-  path: '/charts/boxplot',
-  element: <Boxplot />
-}, {
-  name: 'Treemap',
-  path: '/charts/treemap',
-  element: <Treemap />
-}, {
-  name: 'Pie',
-  path: '/charts/pie',
-  element: <Pie />
-}, {
-  name: 'Radar',
-  path: '/charts/radar',
-  element: <Radar />
-}, {
-  name: 'Radial Bar',
-  path: '/charts/radial-bar',
-  element: <RadialBar />
-}, {
-  name: 'Scatter',
-  path: '/charts/scatter',
-  element: <Scatter />
-}, {
-  name: 'Polar Area',
-  path: '/charts/polar',
-  element: <Polar />
-}, {
-  name: 'Google',
-  path: '/maps/google',
-  element: <GoogleMaps />
-}, {
-  name: 'Vector',
-  path: '/maps/vector',
-  element: <VectorMaps />
-}];
-const formsRoutes = [{
-  name: 'Basic Elements',
-  path: '/forms/basic',
-  element: <Basic />
-}, {
-  name: 'Checkbox & Radio',
-  path: '/forms/checkbox',
-  element: <Checkbox />
-}, {
-  name: 'Choice Select',
-  path: '/forms/select',
-  element: <Select />
-}, {
-  name: 'Clipboard',
-  path: '/forms/clipboard',
-  element: <Clipboard />
-}, {
-  name: 'Flat Picker',
-  path: '/forms/flat-picker',
-  element: <FlatPicker />
-}, {
-  name: 'Validation',
-  path: '/forms/validation',
-  element: <Validation />
-}, {
-  name: 'Wizard',
-  path: '/forms/wizard',
-  element: <Wizard />
-}, {
-  name: 'File Uploads',
-  path: '/forms/file-uploads',
-  element: <FileUploads />
-}, {
-  name: 'Editors',
-  path: '/forms/editors',
-  element: <Editors />
-}, {
-  name: 'Input Mask',
-  path: '/forms/input-mask',
-  element: <InputMask />
-}, {
-  name: 'Slider',
-  path: '/forms/slider',
-  element: <Slider />
-}];
-const tableRoutes = [{
-  name: 'Basic Tables',
-  path: '/tables/basic',
-  element: <BasicTable />
-}, {
-  name: 'Grid JS',
-  path: '/tables/gridjs',
-  element: <GridjsTable />
-}];
-const iconRoutes = [{
-  name: 'Boxicons',
-  path: '/icons/boxicons',
-  element: <BoxIcons />
-}, {
-  name: 'IconaMoon',
-  path: '/icons/iconamoon',
-  element: <IconaMoonIcons />
-}];
-export const authRoutes = [{
-  path: '/auth/sign-in',
-  name: 'Sign In',
-  element: <AuthSignIn />
-}, {
-  name: 'Sign In 2',
-  path: '/auth/sign-in-2',
-  element: <AuthSignIn2 />
-}, {
-  name: 'Sign Up',
-  path: '/auth/sign-up',
-  element: <AuthSignUp />
-}, {
-  name: 'Sign Up 2',
-  path: '/auth/sign-up-2',
-  element: <AuthSignUp2 />
-}, {
-  name: 'Reset Password',
-  path: '/auth/reset-pass',
-  element: <ResetPassword />
-}, {
-  name: 'Reset Password 2',
-  path: '/auth/reset-pass-2',
-  element: <ResetPassword2 />
-}, {
-  name: 'Lock Screen',
-  path: '/auth/lock-screen',
-  element: <LockScreen />
-}, {
-  name: 'Lock Screen 2',
-  path: '/auth/lock-screen-2',
-  element: <LockScreen2 />
-}, {
-  name: '404 Error',
-  path: '/error-404',
-  element: <NotFound />
-}, {
-  name: 'Maintenance',
-  path: '/maintenance',
-  element: <Maintenance />
-}, {
-  name: '404 Error 2',
-  path: '/error-404-2',
-  element: <NotFound2 />
-}, {
-  name: 'Coming Soon',
-  path: '/coming-soon',
-  element: <ComingSoon />
-}];
-export const appRoutes = [...initialRoutes, ...generalRoutes, ...appsRoutes, ...customRoutes, ...baseUIRoutes, ...advancedUIRoutes, ...chartsNMapsRoutes, ...formsRoutes, ...tableRoutes, ...iconRoutes, ...authRoutes];
+
+// Menu Items and Utility Functions
+export const findAllParent = (menuItems, menuItem) => {
+  let parents = [];
+  const parent = findMenuItem(menuItems, menuItem.parentKey);
+  if (parent) {
+    parents.push(parent.key);
+    if (parent.parentKey) {
+      parents = [...parents, ...findAllParent(menuItems, parent)];
+    }
+  }
+  return parents;
+};
+export const getMenuItemFromURL = (items, url) => {
+  if (items instanceof Array) {
+    for (const item of items) {
+      const foundItem = getMenuItemFromURL(item, url);
+      if (foundItem) {
+        return foundItem;
+      }
+    }
+  } else {
+    if (items.url == url) return items;
+    if (items.children != null) {
+      for (const item of items.children) {
+        if (item.url == url) return item;
+      }
+    }
+  }
+};
+export const findMenuItem = (menuItems, menuItemKey) => {
+  if (menuItems && menuItemKey) {
+    for (const item of menuItems) {
+      if (item.key === menuItemKey) {
+        return item;
+      }
+      const found = findMenuItem(item.children, menuItemKey);
+      if (found) return found;
+    }
+  }
+  return null;
+};
+
+export const MENU_ITEMS = [
+  {
+    key: 'general',
+    label: 'GENERAL',
+    isTitle: true
+  },
+  {
+    key: 'dashboards',
+    icon: 'iconamoon:home-duotone',
+    label: 'Dashboards',
+    children: [
+      { key: 'dashboard-analytics', label: 'Analytics', url: '/dashboard/analytics', parentKey: 'dashboards' },
+      { key: 'dashboard-finance', label: 'Finance', url: '/dashboard/finance', parentKey: 'dashboards' },
+      { key: 'dashboard-sales', label: 'Sales', url: '/dashboard/sales', parentKey: 'dashboards' }
+    ]
+  },
+  {
+    key: 'health-authorities',
+    icon: 'iconamoon:medical-cross-duotone',
+    label: 'Health Authorities',
+    children: [
+      { key: 'clinicians-table', label: 'Clinicians Table', url: '/health/clinicians', parentKey: 'health-authorities' },
+      { key: 'clinician-list', label: 'Clinician List', url: '/health/clinicianlist', parentKey: 'health-authorities' },
+      { key: 'diagnoses-table', label: 'Diagnoses Table', url: '/health/diagnoses', parentKey: 'health-authorities' },
+      { key: 'diagnosis', label: 'Diagnosis', url: '/health/diagnosis', parentKey: 'health-authorities' },
+      { key: 'drugs', label: 'Drugs', url: '/health/drugs', parentKey: 'health-authorities' },
+      { key: 'drugs-table', label: 'Drugs Table', url: '/health/drugs-table', parentKey: 'health-authorities' },
+      { key: 'drug-details', label: 'Drug Details', url: '/health/drugs/:id', parentKey: 'health-authorities' },
+      { key: 'pharmacies', label: 'Pharmacies', url: '/health/pharmacies', parentKey: 'health-authorities' },
+      { key: 'payers', label: 'Payers', url: '/health/payers', parentKey: 'health-authorities' },
+      { key: 'payer-ha-credential', label: 'Payer HA Credential', url: '/payers/:id/ha-credential', parentKey: 'health-authorities' }
+    ]
+  },
+  {
+    key: 'healthcare-themes',
+    icon: 'iconamoon:healthcare-duotone',
+    label: 'Healthcare Themes',
+    children: [
+      { key: 'healthcare-diagnosis', label: 'Healthcare Diagnosis', url: '/theme/diagnosis', parentKey: 'healthcare-themes' },
+      { key: 'prescription', label: 'Prescription', url: '/theme/prescription', parentKey: 'healthcare-themes' }
+    ]
+  },
+  {
+    key: 'apps',
+    label: 'APPS',
+    isTitle: true
+  },
+  {
+    key: 'ecommerce',
+    icon: 'iconamoon:shopping-bag-duotone',
+    label: 'Ecommerce',
+    children: [
+      { key: 'ecommerce-products', label: 'Products', url: '/ecommerce/products', parentKey: 'ecommerce' },
+      { key: 'ecommerce-products-details', label: 'Product Details', url: '/ecommerce/products/10005', parentKey: 'ecommerce' },
+      { key: 'ecommerce-create-product', label: 'Create Product', url: '/ecommerce/products/create', parentKey: 'ecommerce' },
+      { key: 'ecommerce-customers', label: 'Customers', url: '/ecommerce/customers', parentKey: 'ecommerce' },
+      { key: 'ecommerce-sellers', label: 'Sellers', url: '/ecommerce/sellers', parentKey: 'ecommerce' },
+      { key: 'ecommerce-orders', label: 'Orders', url: '/ecommerce/orders', parentKey: 'ecommerce' }
+    ]
+  }
+];
+
+// Route Definitions
+const initialRoutes = [
+  { path: '/', name: 'root', element: <Navigate to="/dashboard/analytics" /> },
+  { path: '*', name: 'not-found', element: <NotFound /> }
+];
+const generalRoutes = [
+  { path: '/dashboard/analytics', name: 'Analytics', element: <Analytics /> },
+  { path: '/dashboard/finance', name: 'Finance', element: <Finance /> },
+  { path: '/dashboard/sales', name: 'Sales', element: <Sales /> }
+];
+const healthAuthorityRoutes = [
+  { path: '/health/clinicians', name: 'Clinicians Table', element: <CliniciansTable /> },
+  { path: '/health/clinicianlist', name: 'Clinician List', element: <ClinicianList /> },
+  { path: '/health/diagnoses', name: 'Diagnoses Table', element: <DiagnosesTable /> },
+  { path: '/health/diagnosis', name: 'Diagnosis', element: <Diagnosis /> },
+  { path: '/health/drugs', name: 'Drugs', element: <Drugs /> },
+  { path: '/health/drugs-table', name: 'Drugs Table', element: <DrugsTable /> },
+  { path: '/health/drugs/:id', name: 'Drug Details', element: <DrugDetails /> },
+  { path: '/health/pharmacies', name: 'Pharmacies', element: <Pharmacies /> },
+  { path: '/health/payers', name: 'Payers', element: <Payers /> },
+  { path: '/payers/:id/ha-credential', name: 'Payer HA Credential', element: <PayerHACredential /> }
+];
+const appsRoutes = [
+  { name: 'Products', path: '/ecommerce/products', element: <EcommerceProducts /> },
+  { name: 'Product Details', path: '/ecommerce/products/:productId', element: <EcommerceProductDetails /> },
+  { name: 'Create Product', path: '/ecommerce/products/create', element: <EcommerceProductCreate /> },
+  { name: 'Customers', path: '/ecommerce/customers', element: <EcommerceCustomers /> },
+  { name: 'Sellers', path: '/ecommerce/sellers', element: <EcommerceSellers /> },
+  { name: 'Orders', path: '/ecommerce/orders', element: <EcommerceOrders /> },
+  { name: 'Order Details', path: '/ecommerce/orders/:orderId', element: <EcommerceOrderDetails /> },
+  { name: 'Inventory', path: '/ecommerce/inventory', element: <EcommerceInventory /> },
+  { name: 'Chat', path: '/apps/chat', element: <Chat /> },
+  { name: 'Email', path: '/apps/email', element: <Email /> },
+  { name: 'Schedule', path: '/calendar/schedule', element: <Schedule /> },
+  { name: 'Integration', path: '/calendar/integration', element: <Integration /> },
+  { name: 'Help', path: '/calendar/help', element: <Help /> },
+  { name: 'Todo', path: '/apps/todo', element: <Todo /> },
+  { name: 'Social', path: '/apps/social', element: <Social /> },
+  { name: 'Contacts', path: '/apps/contacts', element: <Contacts /> },
+  { name: 'Invoices List', path: '/invoices', element: <Invoices /> },
+  { name: 'Invoices Details', path: '/invoices/:invoiceId', element: <InvoiceDetails /> }
+];
+const customRoutes = [
+  { name: 'Welcome', path: '/pages/welcome', element: <Welcome /> },
+  { name: 'FAQs', path: '/pages/faqs', element: <FAQs /> },
+  { name: 'Profile', path: '/pages/profile', element: <Profile /> },
+  { name: 'Contact Us', path: '/pages/contact-us', element: <ContactUs /> },
+  { name: 'About Us', path: '/pages/about-us', element: <AboutUs /> },
+  { name: 'Our Team', path: '/pages/our-team', element: <OurTeam /> },
+  { name: 'Timeline', path: '/pages/timeline', element: <TimelinePage /> },
+  { name: 'Pricing', path: '/pages/pricing', element: <Pricing /> },
+  { name: 'Error 404 Alt', path: '/pages/error-404-alt', element: <NotFoundAdmin /> },
+  { name: 'Widgets', path: '/widgets', element: <Widgets /> }
+];
+const baseUIRoutes = [
+  { name: 'Accordions', path: '/ui/accordions', element: <Accordions /> },
+  { name: 'Alerts', path: '/ui/alerts', element: <Alerts /> },
+  { name: 'Avatars', path: '/ui/avatars', element: <Avatars /> },
+  { name: 'Badges', path: '/ui/badges', element: <Badges /> },
+  { name: 'Breadcrumb', path: '/ui/breadcrumb', element: <Breadcrumb /> },
+  { name: 'Buttons', path: '/ui/buttons', element: <Buttons /> },
+  { name: 'Cards', path: '/ui/cards', element: <Cards /> },
+  { name: 'Carousel', path: '/ui/carousel', element: <Carousel /> },
+  { name: 'Collapse', path: '/ui/collapse', element: <Collapse /> },
+  { name: 'Dropdowns', path: '/ui/dropdowns', element: <Dropdowns /> },
+  { name: 'List Group', path: '/ui/list-group', element: <ListGroup /> },
+  { name: 'Modals', path: '/ui/modals', element: <Modals /> },
+  { name: 'Tabs', path: '/ui/tabs', element: <Tabs /> },
+  { name: 'Offcanvas', path: '/ui/offcanvas', element: <Offcanvas /> },
+  { name: 'Pagination', path: '/ui/pagination', element: <Pagination /> },
+  { name: 'Placeholders', path: '/ui/placeholders', element: <Placeholders /> },
+  { name: 'Popovers', path: '/ui/popovers', element: <Popovers /> },
+  { name: 'Progress', path: '/ui/progress', element: <Progress /> },
+  { name: 'Spinners', path: '/ui/spinners', element: <Spinners /> },
+  { name: 'Toasts', path: '/ui/toasts', element: <Toasts /> },
+  { name: 'Tooltips', path: '/ui/tooltips', element: <Tooltips /> }
+];
+const advancedUIRoutes = [
+  { name: 'Ratings', path: '/advanced/ratings', element: <Ratings /> },
+  { name: 'Sweet Alert', path: '/advanced/alert', element: <SweetAlerts /> },
+  { name: 'Swiper Slider', path: '/advanced/swiper', element: <Swiper /> },
+  { name: 'Scrollbar', path: '/advanced/scrollbar', element: <Scrollbar /> },
+  { name: 'Toastify', path: '/advanced/toastify', element: <Toastify /> }
+];
+const chartsNMapsRoutes = [
+  { name: 'Area', path: '/charts/area', element: <Area /> },
+  { name: 'Bar', path: '/charts/bar', element: <Bar /> },
+  { name: 'Bubble', path: '/charts/bubble', element: <Bubble /> },
+  { name: 'Candle Stick', path: '/charts/candlestick', element: <Candlestick /> },
+  { name: 'Column', path: '/charts/column', element: <Column /> },
+  { name: 'Heatmap', path: '/charts/heatmap', element: <Heatmap /> },
+  { name: 'Line', path: '/charts/line', element: <Line /> },
+  { name: 'Mixed', path: '/charts/mixed', element: <Mixed /> },
+  { name: 'Timeline', path: '/charts/timeline', element: <Timeline /> },
+  { name: 'Boxplot', path: '/charts/boxplot', element: <Boxplot /> },
+  { name: 'Treemap', path: '/charts/treemap', element: <Treemap /> },
+  { name: 'Pie', path: '/charts/pie', element: <Pie /> },
+  { name: 'Radar', path: '/charts/radar', element: <Radar /> },
+  { name: 'Radial Bar', path: '/charts/radial-bar', element: <RadialBar /> },
+  { name: 'Scatter', path: '/charts/scatter', element: <Scatter /> },
+  { name: 'Polar Area', path: '/charts/polar', element: <Polar /> },
+  { name: 'Google', path: '/maps/google', element: <GoogleMaps /> },
+  { name: 'Vector', path: '/maps/vector', element: <VectorMaps /> }
+];
+const formsRoutes = [
+  { name: 'Basic Elements', path: '/forms/basic', element: <Basic /> },
+  { name: 'Checkbox & Radio', path: '/forms/checkbox', element: <Checkbox /> },
+  { name: 'Choice Select', path: '/forms/select', element: <Select /> },
+  { name: 'Clipboard', path: '/forms/clipboard', element: <Clipboard /> },
+  { name: 'Flat Picker', path: '/forms/flat-picker', element: <FlatPicker /> },
+  { name: 'Validation', path: '/forms/validation', element: <Validation /> },
+  { name: 'Wizard', path: '/forms/wizard', element: <Wizard /> },
+  { name: 'File Uploads', path: '/forms/file-uploads', element: <FileUploads /> },
+  { name: 'Editors', path: '/forms/editors', element: <Editors /> },
+  { name: 'Input Mask', path: '/forms/input-mask', element: <InputMask /> },
+  { name: 'Slider', path: '/forms/slider', element: <Slider /> }
+];
+const tableRoutes = [
+  { name: 'Basic Tables', path: '/tables/basic', element: <BasicTable /> },
+  { name: 'Grid JS', path: '/tables/gridjs', element: <GridjsTable /> }
+];
+const iconRoutes = [
+  { name: 'Boxicons', path: '/icons/boxicons', element: <BoxIcons /> },
+  { name: 'IconaMoon', path: '/icons/iconamoon', element: <IconaMoonIcons /> }
+];
+export const authRoutes = [
+  { path: '/auth/sign-in', name: 'Sign In', element: <AuthSignIn /> },
+  { name: 'Sign In 2', path: '/auth/sign-in-2', element: <AuthSignIn2 /> },
+  { name: 'Sign Up', path: '/auth/sign-up', element: <AuthSignUp /> },
+  { name: 'Sign Up 2', path: '/auth/sign-up-2', element: <AuthSignUp2 /> },
+  { name: 'Reset Password', path: '/auth/reset-pass', element: <ResetPassword /> },
+  { name: 'Reset Password 2', path: '/auth/reset-pass-2', element: <ResetPassword2 /> },
+  { name: 'Lock Screen', path: '/auth/lock-screen', element: <LockScreen /> },
+  { name: 'Lock Screen 2', path: '/auth/lock-screen-2', element: <LockScreen2 /> },
+  { name: '404 Error', path: '/error-404', element: <NotFound /> },
+  { name: 'Maintenance', path: '/maintenance', element: <Maintenance /> },
+  { name: '404 Error 2', path: '/error-404-2', element: <NotFound2 /> },
+  { name: 'Coming Soon', path: '/coming-soon', element: <ComingSoon /> }
+];
+
+export const appRoutes = [
+  ...initialRoutes,
+  ...generalRoutes,
+  ...healthAuthorityRoutes,
+  ...appsRoutes,
+  ...customRoutes,
+  ...baseUIRoutes,
+  ...advancedUIRoutes,
+  ...chartsNMapsRoutes,
+  ...formsRoutes,
+  ...tableRoutes,
+  ...iconRoutes,
+  ...authRoutes
+];

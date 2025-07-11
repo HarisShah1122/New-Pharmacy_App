@@ -219,6 +219,33 @@
     "@babel/helper-validator-identifier" "^7.24.7"
     to-fast-properties "^2.0.0"
 
+"@coreui/coreui@^5.4.0":
+  version "5.4.1"
+  resolved "https://registry.npmmirror.com/@coreui/coreui/-/coreui-5.4.1.tgz"
+  integrity sha512-uDWb6yz914HG5GA7GQX9QUAV1PdU9xLkDwzsaNKENmzs3ryrAocykOp11TtsCyJR0ep5wi+1tQtFjhr4k/YSbQ==
+  dependencies:
+    html-entities "^2.6.0"
+    html-to-md "^0.8.8"
+
+"@coreui/icons-react@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.npmmirror.com/@coreui/icons-react/-/icons-react-2.3.0.tgz"
+  integrity sha512-s4jjCrtHnqnu30GLcfDbtWxEaB7imBQ5E6w89JzP5Jd6EV6o38tR0RNix4nXRubayJKAvIjlwZWOKEFNG0NM7Q==
+
+"@coreui/icons@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.npmmirror.com/@coreui/icons/-/icons-3.0.1.tgz"
+  integrity sha512-u9UKEcRMyY9pa4jUoLij8pAR03g5g6TLWV33/Mx2ix8sffyi0eO4fLV8DSTQljDCw938zt7KYog5cVKEAJUxxg==
+
+"@coreui/react@^5.7.0":
+  version "5.7.0"
+  resolved "https://registry.npmmirror.com/@coreui/react/-/react-5.7.0.tgz"
+  integrity sha512-iaR9VVCY9jKLhRWvM9evQ8hGaa74u+NuU3fRYfbC9sc2qgGrtUQXtG+IOnn+7C40kOwcswnnnp84cKRaoFZ+CQ==
+  dependencies:
+    "@coreui/coreui" "^5.4.0"
+    "@popperjs/core" "^2.11.8"
+    prop-types "^15.8.1"
+
 "@emoji-mart/data@^1.2.1":
   version "1.2.1"
   resolved "https://registry.npmmirror.com/@emoji-mart/data/-/data-1.2.1.tgz"
@@ -502,7 +529,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@popperjs/core@^2.11.6":
+"@popperjs/core@^2.11.6", "@popperjs/core@^2.11.8":
   version "2.11.8"
   resolved "https://registry.npmmirror.com/@popperjs/core/-/core-2.11.8.tgz"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
@@ -1493,6 +1520,16 @@ hoist-non-react-statics@^3.3.1:
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
   dependencies:
     react-is "^16.7.0"
+
+html-entities@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.npmmirror.com/html-entities/-/html-entities-2.6.0.tgz"
+  integrity sha512-kig+rMn/QOVRvr7c86gQ8lWXq+Hkv6CbAH1hLu+RG338StTpE8Z0b44SDVaqVu7HGKf27frdmUYEs9hTUX/cLQ==
+
+html-to-md@^0.8.8:
+  version "0.8.8"
+  resolved "https://registry.npmmirror.com/html-to-md/-/html-to-md-0.8.8.tgz"
+  integrity sha512-lgK3KKagobOguNi1XOfNaTtFSsjySir1CPfzewzVUjFM4x0RASnyZu47Hoe9nStpWFwpOwIrdxXzhxLIRbWllQ==
 
 ignore@^5.2.0:
   version "5.3.1"
@@ -2493,6 +2530,11 @@ use-isomorphic-layout-effect@^1.1.2:
   version "1.1.2"
   resolved "https://registry.npmmirror.com/use-isomorphic-layout-effect/-/use-isomorphic-layout-effect-1.1.2.tgz"
   integrity sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==
+
+uuid@^11.1.0:
+  version "11.1.0"
+  resolved "https://registry.npmmirror.com/uuid/-/uuid-11.1.0.tgz"
+  integrity sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==
 
 vite@^5.4.19:
   version "5.4.19"
