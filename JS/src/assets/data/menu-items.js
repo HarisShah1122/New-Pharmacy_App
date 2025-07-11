@@ -11,7 +11,8 @@ export const MENU_ITEMS = [{
     label: 'Analytics',
     url: '/dashboard/analytics',
     parentKey: 'dashboards'
-  }, {
+  },
+  {
     key: 'dashboard-finance',
     label: 'Finance',
     url: '/dashboard/finance',
@@ -22,6 +23,32 @@ export const MENU_ITEMS = [{
     url: '/dashboard/sales',
     parentKey: 'dashboards'
   }]
+},
+{
+  key: 'health-authorities',
+  icon: 'iconamoon:medical-cross-duotone',
+  label: 'Health Authorities',
+  children: [
+    { key: 'clinicians-table', label: 'Clinicians Table', url: '/health/clinicians', parentKey: 'health-authorities' },
+    { key: 'clinician-list', label: 'Clinician List', url: '/health/clinicianlist', parentKey: 'health-authorities' },
+    { key: 'diagnoses-table', label: 'Diagnoses Table', url: '/health/diagnoses', parentKey: 'health-authorities' },
+    { key: 'diagnosis', label: 'Diagnosis', url: '/health/diagnosis', parentKey: 'health-authorities' },
+    { key: 'drugs', label: 'Drugs', url: '/health/drugs', parentKey: 'health-authorities' },
+    { key: 'drugs-table', label: 'Drugs Table', url: '/health/drugs-table', parentKey: 'health-authorities' },
+    { key: 'drug-details', label: 'Drug Details', url: '/health/drugs/:id', parentKey: 'health-authorities' },
+    { key: 'pharmacies', label: 'Pharmacies', url: '/health/pharmacies', parentKey: 'health-authorities' },
+    { key: 'payers', label: 'Payers', url: '/health/payers', parentKey: 'health-authorities' },
+    { key: 'payer-ha-credential', label: 'Payer HA Credential', url: '/payers/:id/ha-credential', parentKey: 'health-authorities' }
+  ]
+},
+{
+  key: 'healthcare-themes',
+  icon: 'iconamoon:healthcare-duotone',
+  label: 'Healthcare Themes',
+  children: [
+    { key: 'healthcare-diagnosis', label: 'Healthcare Diagnosis', url: '/theme/diagnosis', parentKey: 'healthcare-themes' },
+    { key: 'prescription', label: 'Prescription', url: '/theme/prescription', parentKey: 'healthcare-themes' }
+  ]
 }, {
   key: 'apps',
   label: 'APPS',
@@ -131,7 +158,8 @@ export const MENU_ITEMS = [{
     url: '/invoices/RB6985',
     parentKey: 'apps-invoices'
   }]
-}, {
+},
+{
   key: 'custom',
   label: 'Custom',
   isTitle: true
