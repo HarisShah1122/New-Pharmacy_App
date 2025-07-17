@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import {
   CCol,
@@ -23,7 +22,7 @@ const DrugDetails = () => {
   const [error, setError] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
-  const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081';
+  const baseUrl = ''; // Use Vite proxy
 
   useEffect(() => {
     const fetchDrug = async () => {
@@ -31,11 +30,16 @@ const DrugDetails = () => {
       setError(null);
       try {
         console.log(`Fetching drug with ID: ${id}`);
-        const response = await fetch(`${baseUrl}/drugs/${id}`);
+        const response = await fetch(`/drugs/${id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+          },
+        });
         console.log(`Response status: ${response.status}`);
         if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`Failed to fetch drug: ${response.statusText} (${errorText})`);
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to fetch drug: ' + response.statusText);
         }
         const data = await response.json();
         console.log('Fetched drug data:', data);

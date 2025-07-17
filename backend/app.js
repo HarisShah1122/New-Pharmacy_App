@@ -20,7 +20,7 @@ const validation = require('./helpers/validation.request');
 const controllers = require('./controllers/HealthAuthorityController');
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true,
 }));
 

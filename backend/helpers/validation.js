@@ -315,13 +315,13 @@ const validationPrescription = [
   body('diagnoses.*.days_of_supply').optional().isInt({ min: 1 }).withMessage('Days of supply must be a positive integer'),
 ];
 
-const validationDrug = [
-  body('prescription_id').notEmpty().withMessage('Prescription ID is required').isUUID().withMessage('Invalid UUID format'),
-  body('drug_code').notEmpty().withMessage('Drug code is required').isString().trim(),
-  body('quantity').notEmpty().withMessage('Quantity is required').isInt({ min: 1 }).withMessage('Quantity must be a positive integer'),
-  body('days_of_supply').notEmpty().withMessage('Days of supply is required').isInt({ min: 1 }).withMessage('Days of supply must be a positive integer'),
-  body('instructions').optional().isString().trim(),
-];
+// const validationDrug = [
+//   body('prescription_id').notEmpty().withMessage('Prescription ID is required').isUUID().withMessage('Invalid UUID format'),
+//   body('drug_code').notEmpty().withMessage('Drug code is required').isString().trim(),
+//   body('quantity').notEmpty().withMessage('Quantity is required').isInt({ min: 1 }).withMessage('Quantity must be a positive integer'),
+//   body('days_of_supply').notEmpty().withMessage('Days of supply is required').isInt({ min: 1 }).withMessage('Days of supply must be a positive integer'),
+//   body('instructions').optional().isString().trim(),
+// ];
 
 const validationDiagnosis = [
   body('prescription_id').notEmpty().withMessage('Prescription ID is required').isUUID().withMessage('Invalid UUID format'),
@@ -430,129 +430,129 @@ const validationUser = [
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long'),
 ];
-// const validationDrug = [
-//   body("drugs")
-//     .isArray({ min: 1, max: 1000 })
-//     .withMessage("Request body must be a non-empty array of drugs with a maximum of 1000 entries")
-//     .custom((drugs) => {
-//       const ndcDrugCodes = drugs.map((d) => d.ndc_drug_code);
-//       const codeDuplicates = ndcDrugCodes.filter((code, index) => ndcDrugCodes.indexOf(code) !== index);
-//       if (codeDuplicates.length > 0) {
-//         throw new Error(`Duplicate NDC drug code(s) found: ${[...new Set(codeDuplicates)].join(", ")}`);
-//       }
-//       const ids = drugs.map((d) => d.id);
-//       const idDuplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
-//       if (idDuplicates.length > 0) {
-//         throw new Error(`Duplicate ID(s) found: ${[...new Set(idDuplicates)].join(", ")}`);
-//       }
-//       return true;
-//     }),
+const validationDrug = [
+  body("drugs")
+    .isArray({ min: 1, max: 1000 })
+    .withMessage("Request body must be a non-empty array of drugs with a maximum of 1000 entries")
+    .custom((drugs) => {
+      const ndcDrugCodes = drugs.map((d) => d.ndc_drug_code);
+      const codeDuplicates = ndcDrugCodes.filter((code, index) => ndcDrugCodes.indexOf(code) !== index);
+      if (codeDuplicates.length > 0) {
+        throw new Error(`Duplicate NDC drug code(s) found: ${[...new Set(codeDuplicates)].join(", ")}`);
+      }
+      const ids = drugs.map((d) => d.id);
+      const idDuplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
+      if (idDuplicates.length > 0) {
+        throw new Error(`Duplicate ID(s) found: ${[...new Set(idDuplicates)].join(", ")}`);
+      }
+      return true;
+    }),
 
-//   body("drugs.*.id")
-//     .notEmpty()
-//     .withMessage("ID is required for each drug")
-//     .isUUID()
-//     .withMessage("ID must be a valid UUID"),
+  body("drugs.*.id")
+    .notEmpty()
+    .withMessage("ID is required for each drug")
+    .isUUID()
+    .withMessage("ID must be a valid UUID"),
 
-//   body("drugs.*.ndc_drug_code")
-//     .notEmpty()
-//     .withMessage("NDC drug code is required for each drug")
-//     .isString()
-//     .withMessage("NDC drug code must be a string"),
+  body("drugs.*.ndc_drug_code")
+    .notEmpty()
+    .withMessage("NDC drug code is required for each drug")
+    .isString()
+    .withMessage("NDC drug code must be a string"),
 
-//   body("drugs.*.ha_code")
-//     .optional()
-//     .isString()
-//     .withMessage("HA code must be a string if provided"),
+  body("drugs.*.ha_code")
+    .optional()
+    .isString()
+    .withMessage("HA code must be a string if provided"),
 
-//   body("drugs.*.trade_name")
-//     .optional()
-//     .isString()
-//     .withMessage("Trade name must be a string if provided"),
+  body("drugs.*.trade_name")
+    .optional()
+    .isString()
+    .withMessage("Trade name must be a string if provided"),
 
-//   body("drugs.*.status")
-//     .optional()
-//     .isString()
-//     .withMessage("Status must be a string if provided")
-//     .isIn(['active', 'inactive'])
-//     .withMessage("Status must be either 'active' or 'inactive'"),
+  body("drugs.*.status")
+    .optional()
+    .isString()
+    .withMessage("Status must be a string if provided")
+    .isIn(['active', 'inactive'])
+    .withMessage("Status must be either 'active' or 'inactive'"),
 
-//   body("drugs.*.manufacturer")
-//     .optional()
-//     .isString()
-//     .withMessage("Manufacturer must be a string if provided"),
+  body("drugs.*.manufacturer")
+    .optional()
+    .isString()
+    .withMessage("Manufacturer must be a string if provided"),
 
-//   body("drugs.*.local_agent")
-//     .optional()
-//     .isString()
-//     .withMessage("Local agent must be a string if provided"),
+  body("drugs.*.local_agent")
+    .optional()
+    .isString()
+    .withMessage("Local agent must be a string if provided"),
 
-//   body("drugs.*.dosage_form")
-//     .optional()
-//     .isString()
-//     .withMessage("Dosage form must be a string if provided"),
+  body("drugs.*.dosage_form")
+    .optional()
+    .isString()
+    .withMessage("Dosage form must be a string if provided"),
 
-//   body("drugs.*.package_type")
-//     .optional()
-//     .isString()
-//     .withMessage("Package type must be a string if provided"),
+  body("drugs.*.package_type")
+    .optional()
+    .isString()
+    .withMessage("Package type must be a string if provided"),
 
-//   body("drugs.*.package_size")
-//     .optional()
-//     .isString()
-//     .withMessage("Package size must be a string if provided"),
+  body("drugs.*.package_size")
+    .optional()
+    .isString()
+    .withMessage("Package size must be a string if provided"),
 
-//   body("drugs.*.granular_unit")
-//     .optional()
-//     .isInt({ min: 0 })
-//     .withMessage("Granular unit must be a non-negative integer if provided"),
+  body("drugs.*.granular_unit")
+    .optional()
+    .isInt({ min: 0 })
+    .withMessage("Granular unit must be a non-negative integer if provided"),
 
-//   body("drugs.*.unit_type")
-//     .optional()
-//     .isString()
-//     .withMessage("Unit type must be a string if provided"),
+  body("drugs.*.unit_type")
+    .optional()
+    .isString()
+    .withMessage("Unit type must be a string if provided"),
 
-//   body("drugs.*.active_ingredients")
-//     .optional()
-//     .isString()
-//     .withMessage("Active ingredients must be a string if provided"),
+  body("drugs.*.active_ingredients")
+    .optional()
+    .isString()
+    .withMessage("Active ingredients must be a string if provided"),
 
-//   body("drugs.*.strengths")
-//     .optional()
-//     .isString()
-//     .withMessage("Strengths must be a string if provided"),
+  body("drugs.*.strengths")
+    .optional()
+    .isString()
+    .withMessage("Strengths must be a string if provided"),
 
-//   body("drugs.*.start_date")
-//     .optional()
-//     .isISO8601()
-//     .withMessage("Start date must be a valid ISO 8601 date if provided"),
+  body("drugs.*.start_date")
+    .optional()
+    .isISO8601()
+    .withMessage("Start date must be a valid ISO 8601 date if provided"),
 
-//   body("drugs.*.end_date")
-//     .optional()
-//     .isISO8601()
-//     .withMessage("End date must be a valid ISO 8601 date if provided"),
+  body("drugs.*.end_date")
+    .optional()
+    .isISO8601()
+    .withMessage("End date must be a valid ISO 8601 date if provided"),
 
-//   body("drugs.*.dispensed_quantity")
-//     .optional()
-//     .isInt({ min: 1 })
-//     .withMessage("Dispensed Quantity must be a positive integer if provided"),
+  body("drugs.*.dispensed_quantity")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("Dispensed Quantity must be a positive integer if provided"),
 
-//   body("drugs.*.days_of_supply")
-//     .optional()
-//     .isInt({ min: 1 })
-//     .withMessage("Days of Supply must be a positive integer if provided"),
+  body("drugs.*.days_of_supply")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("Days of Supply must be a positive integer if provided"),
 
-//   body("drugs.*.instructions")
-//     .optional()
-//     .isString()
-//     .withMessage("Instructions must be a string if provided"),
+  body("drugs.*.instructions")
+    .optional()
+    .isString()
+    .withMessage("Instructions must be a string if provided"),
 
-//   body("drugs.*.drug_list_id")
-//     .notEmpty()
-//     .withMessage("Drug list ID is required for each drug")
-//     .isUUID()
-//     .withMessage("Drug list ID must be a valid UUID"),
-// ];
+  body("drugs.*.drug_list_id")
+    .notEmpty()
+    .withMessage("Drug list ID is required for each drug")
+    .isUUID()
+    .withMessage("Drug list ID must be a valid UUID"),
+];
 const validationDrugList = [
   body("drug_list_id")
     .optional()
