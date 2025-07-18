@@ -458,7 +458,7 @@ const ClinicianList = () => {
                 </CDropdownMenu>
               </CDropdown>
               <CButton color="primary" onClick={openModal}>
-                <CIcon icon={cilPlus} className="me-2" />
+                {/* <CIcon icon={cilPlus} className="me-2" /> */}
                 Add Clinician List
               </CButton>
             </div>

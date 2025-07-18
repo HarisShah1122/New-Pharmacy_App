@@ -17,6 +17,8 @@ const DrugDetails = lazy(() => import('../assets/healthauthorities/DrugDetails.j
 const Pharmacies = lazy(() => import('../assets/healthauthorities/Pharmacies.jsx'));
 const Payers = lazy(() => import('../assets/healthauthorities/Payers.jsx'));
 const PayerHACredential = lazy(() => import('../assets/healthauthorities/PayerHACredential.jsx'));
+const DiagnosisTheme = lazy(() => import('../assets/HealthcareThemes/Diagnosis.jsx')); 
+const Prescription = lazy(() => import('../assets/HealthcareThemes/Prescription.jsx')); 
 
 // Apps Routes
 const EcommerceProducts = lazy(() => import('@/app/(admin)/ecommerce/products/page'));
@@ -263,6 +265,11 @@ const healthAuthorityRoutes = [
   { path: '/health/payers', name: 'Payers', element: <Payers /> },
   { path: '/payers/:id/ha-credential', name: 'Payer HA Credential', element: <PayerHACredential /> }
 ];
+const healthcareThemeRoutes = [
+  { path: '/theme/diagnosis', name: 'Healthcare Diagnosis', element: <DiagnosisTheme /> },
+  { path: '/theme/prescription', name: 'Prescription', element: <Prescription /> }
+];
+
 const appsRoutes = [
   { name: 'Products', path: '/ecommerce/products', element: <EcommerceProducts /> },
   { name: 'Product Details', path: '/ecommerce/products/:productId', element: <EcommerceProductDetails /> },
@@ -385,6 +392,7 @@ export const appRoutes = [
   ...initialRoutes,
   ...generalRoutes,
   ...healthAuthorityRoutes,
+  ...healthcareThemeRoutes,
   ...appsRoutes,
   ...customRoutes,
   ...baseUIRoutes,

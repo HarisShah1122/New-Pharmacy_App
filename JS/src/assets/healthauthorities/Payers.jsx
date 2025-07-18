@@ -393,7 +393,7 @@ const Payers = () => {
           <div className="d-flex justify-content-between align-items-center">
             <strong>Payers List</strong>
             <CButton color="primary" onClick={openModal}>
-              <CIcon icon={cilPlus} className="me-2" />
+              {/* <CIcon icon={cilPlus} className="me-2" /> */}
               Add Payer
             </CButton>
           </div>

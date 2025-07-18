@@ -366,7 +366,7 @@ const Diagnosis = () => {
           <div className="d-flex justify-content-between align-items-center">
             <strong>Diagnosis Lists</strong>
             <CButton color="primary" onClick={openModal}>
-              <CIcon icon={cilPlus} className="me-2" />
+              {/* <CIcon icon={cilPlus} className="me-2" /> */}
               Add Diagnosis List
             </CButton>
           </div>

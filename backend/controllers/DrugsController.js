@@ -94,14 +94,20 @@ module.exports.controller = function (app) {
   app.get("/drugs/:id", async (req, res) => {
     try {
       const { id } = req.params;
+      console.log(`Fetching drug with ID: ${id}`);
       const drug = await Drug.findByPk(id);
-      if (!drug) return res.status(404).json({
-        error: "Drug not found"
-      });
+      if (!drug) {
+        console.log(`Drug not found for ID: ${id}`);
+        return res.status(404).json({
+          error: "Drug not found"
+        });
+      }
+      console.log('Drug data:', drug.toJSON());
       res.json({
         data: drug
       });
     } catch (error) {
+      console.error('Error in /drugs/:id:', error);
       res.status(500).json({
         error: "Failed to fetch drug",
         details: error.message

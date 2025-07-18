@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import {
   CCol,
@@ -15,6 +16,10 @@ import {
   CButton,
 } from '@coreui/react';
 import { useParams, useNavigate } from 'react-router-dom';
+const isValidUUID = (str) => {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(str);
+};
 
 const DrugDetails = () => {
   const [drug, setDrug] = useState(null);
@@ -22,27 +27,31 @@ const DrugDetails = () => {
   const [error, setError] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
-  const baseUrl = ''; // Use Vite proxy
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081';
 
   useEffect(() => {
     const fetchDrug = async () => {
+      if (!id || id === ':id' || !isValidUUID(id)) {
+        console.error('Invalid drug ID:', id);
+        setError('Invalid drug ID. Please provide a valid UUID.');
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       setError(null);
       try {
-        console.log(`Fetching drug with ID: ${id}`);
-        const response = await fetch(`/drugs/${id}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
-          },
-        });
+        const url = `${baseUrl}/drugs/${id}`;
+        console.log('Fetching URL:', url);
+        console.log('ID from useParams:', id);
+        const response = await fetch(url);
         console.log(`Response status: ${response.status}`);
+        const text = await response.text();
+        console.log('Raw response:', text);
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to fetch drug: ' + response.statusText);
+          throw new Error(`Failed to fetch drug: ${response.statusText} (${text})`);
         }
-        const data = await response.json();
-        console.log('Fetched drug data:', data);
+        const data = JSON.parse(text);
+        console.log('Parsed drug data:', data);
         if (data.data) {
           setDrug(data.data);
         } else {
@@ -57,8 +66,7 @@ const DrugDetails = () => {
     };
 
     fetchDrug();
-  }, [id]);
-
+  }, [id, baseUrl]);
   const handleBack = () => {
     navigate(-1);
   };

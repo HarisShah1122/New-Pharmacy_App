@@ -178,10 +178,16 @@ const CliniciansTable = () => {
         <CCardHeader>
           <div className="d-flex justify-content-between align-items-center w-100">
             <strong>Clinicians</strong>
-            <CButton color="primary" onClick={openModal}>
-              <CIcon icon={cilPlus} className="me-2" />
-              Add Clinician
+            <CButton
+              color="primary"
+              onClick={openModal}
+              style={{ padding: '2px 20px', fontSize: '12px', lineHeight: '1' }}
+            >
+              <CIcon icon={cilPlus} className="me-1" />
+              Add
             </CButton>
+
+
           </div>
           {success && (
             <CAlert
@@ -275,7 +281,7 @@ const CliniciansTable = () => {
                                     });
                                 }}
                               >
-                              Delete Clinician
+                                Delete Clinician
                               </CDropdownItem>
                             </CDropdownMenu>
                           </CDropdown>

@@ -186,10 +186,10 @@ const Pharmacies = () => {
           <div className="d-flex justify-content-between align-items-center">
             <div>
               <strong>Registered Pharmacies</strong>
-              <CIcon icon={cilHospital} className="ms-2" />
+              {/* <CIcon icon={cilHospital} className="ms-2" /> */}
             </div>
             <CButton color="primary" onClick={() => openModal('add')}>
-              <CIcon icon={cilPlus} className="me-2" />
+              {/* <CIcon icon={cilPlus} className="me-2" /> */}
               Add Pharmacy
             </CButton>
           </div>
