@@ -75,10 +75,16 @@ const Payers = () => {
       }
       const data = await response.json();
       if (data.success && data.data.payers) {
-        const formattedData = data.data.payers.map((payer) => ({
-          ...payer,
-          status: (payer.status || 'active').toLowerCase(),
-        }));
+        const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+        const formattedData = data.data.payers.map((payer) => {
+          if (!uuidRegex.test(payer.id)) {
+            console.warn('Non-UUID payer ID found:', payer.id);
+          }
+          return {
+            ...payer,
+            status: (payer.status || 'active').toLowerCase(),
+          };
+        });
         setPayerList(formattedData);
       }
       setLoading(false);
@@ -116,12 +122,14 @@ const Payers = () => {
   };
 
   const openViewModal = (payer) => {
+    console.log('Opening view modal with payer ID:', payer.id);
     setViewModalOpen(true);
     setViewFormData({ payer_id: payer.id });
     setFormError(null);
   };
 
   const openRegisterModal = (payer) => {
+    console.log('Opening register modal with payer ID:', payer.id);
     setRegisterModalOpen(true);
     setRegisterFormData({ payer_id: payer.id, user_name: '', code: '', password: '', status: '' });
     setFormError(null);
@@ -242,6 +250,7 @@ const Payers = () => {
     }
   };
 
+  const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
   const handleViewSubmit = async (e) => {
     e.preventDefault();
     setFormLoading(true);
@@ -249,6 +258,11 @@ const Payers = () => {
 
     if (!viewFormData.payer_id) {
       setFormError('Payer ID is required');
+      setFormLoading(false);
+      return;
+    }
+    if (!uuidRegex.test(viewFormData.payer_id)) {
+      setFormError('Invalid Payer ID format. Please provide a valid UUID.');
       setFormLoading(false);
       return;
     }
@@ -280,6 +294,11 @@ const Payers = () => {
 
     if (!registerFormData.payer_id || !registerFormData.user_name) {
       setFormError('Payer ID and User Name are required');
+      setFormLoading(false);
+      return;
+    }
+    if (!uuidRegex.test(registerFormData.payer_id)) {
+      setFormError('Invalid Payer ID format. Please provide a valid UUID.');
       setFormLoading(false);
       return;
     }
@@ -393,7 +412,7 @@ const Payers = () => {
           <div className="d-flex justify-content-between align-items-center">
             <strong>Payers List</strong>
             <CButton color="primary" onClick={openModal}>
-              {/* <CIcon icon={cilPlus} className="me-2" /> */}
+              <CIcon icon={cilPlus} className="me-2" />
               Add Payer
             </CButton>
           </div>

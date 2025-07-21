@@ -1,13 +1,12 @@
 const { Op } = require('sequelize');
 const PayerHealthAuthority = require('../models/PayerHealthAuthority');
-const Payer = require('../models/Payer'); 
+const Payer = require('../models/Payer');
 
 const sendResponse = (res, status, success, message, data = null, error = null) => {
   res.status(status).json({ success, message, data, error });
 };
 
 module.exports.controller = function (app) {
-
   app.get('/payer', async (req, res) => {
     try {
       const { page = 1, limit = 10 } = req.query;
@@ -33,6 +32,11 @@ module.exports.controller = function (app) {
 
     if (!payer_id) {
       return sendResponse(res, 400, false, 'Payer ID is required');
+    }
+
+    const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+    if (!uuidRegex.test(payer_id)) {
+      return sendResponse(res, 400, false, 'Invalid Payer ID format. Must be a UUID.');
     }
 
     try {
@@ -83,6 +87,11 @@ module.exports.controller = function (app) {
   app.get('/payer/:payer_id/ha-credential', async (req, res) => {
     const { payer_id } = req.params;
 
+    const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+    if (!uuidRegex.test(payer_id)) {
+      return sendResponse(res, 400, false, 'Invalid Payer ID format. Must be a UUID.');
+    }
+
     try {
       const haCredential = await PayerHealthAuthority.findOne({ where: { payer_id } });
       if (!haCredential) {
@@ -110,7 +119,7 @@ module.exports.controller = function (app) {
       if (!credential) {
         return sendResponse(res, 404, false, 'HA credential not found');
       }
-      
+
       const updates = {};
       if (user_name) {
         const existingUserName = await PayerHealthAuthority.findOne({

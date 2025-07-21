@@ -26,22 +26,19 @@ const PayerHACredential = () => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081';
 
   useEffect(() => {
+    const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+    if (!id || !uuidRegex.test(id)) {
+      setError('Invalid or missing Payer ID. Redirecting to Payers list...');
+      setLoading(false);
+      setTimeout(() => navigate('/healthauthorities/payers'), 2000);
+      return;
+    }
     if (!state?.credential) {
       fetchCredential();
     }
-  }, [id]);
+  }, [id, navigate, state]);
 
   const fetchCredential = async () => {
-    const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-    if (!id) {
-      setError('Payer ID is missing.');
-      setLoading(false);
-      return;
-    }
-    if (!uuidRegex.test(id)) {
-      console.warn('Payer ID is not a UUID:', id, 'Proceeding with caution...');
-    }
-
     try {
       setLoading(true);
       setError('');
@@ -77,7 +74,7 @@ const PayerHACredential = () => {
   };
 
   const handleBack = () => {
-    navigate('/healthauthorities/payers');
+    navigate('/health/payers');
   };
 
   const handleRegister = () => {
