@@ -47,7 +47,10 @@ export const MENU_ITEMS = [{
   label: 'Healthcare Themes',
   children: [
     { key: 'healthcare-diagnosis', label: 'Healthcare Diagnosis', url: '/theme/diagnosis', parentKey: 'healthcare-themes' },
-    { key: 'prescription', label: 'Prescription', url: '/theme/prescription', parentKey: 'healthcare-themes' }
+    { key: 'prescription', label: 'Prescription', url: '/theme/prescription', parentKey: 'healthcare-themes' },
+    { key: 'prescription-detail-form', label: 'Prescription Detail Form', url: '/theme/prescription-detail-form', parentKey: 'healthcare-themes' },
+      { key: 'prescription-detail-page', label: 'Prescription Detail Page', url: '/theme/prescription-detail-page', parentKey: 'healthcare-themes' },
+      { key: 'prescription-table', label: 'Prescription Table', url: '/theme/prescription-table', parentKey: 'healthcare-themes' }
   ]
 }, {
   key: 'apps',

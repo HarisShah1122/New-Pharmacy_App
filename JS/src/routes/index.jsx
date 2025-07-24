@@ -17,8 +17,13 @@ const DrugDetails = lazy(() => import('../assets/healthauthorities/DrugDetails.j
 const Pharmacies = lazy(() => import('../assets/healthauthorities/Pharmacies.jsx'));
 const Payers = lazy(() => import('../assets/healthauthorities/Payers.jsx'));
 const PayerHACredential = lazy(() => import('../assets/healthauthorities/PayerHACredential.jsx'));
+// Import statements for Healthcare Themes components
 const DiagnosisTheme = lazy(() => import('../assets/HealthcareThemes/Diagnosis.jsx')); 
 const Prescription = lazy(() => import('../assets/HealthcareThemes/Prescription.jsx')); 
+const PrescriptionDetailForm = lazy(() => import('../assets/HealthcareThemes/PrescriptionDetailForm.jsx'));
+const PrescriptionDetailPage = lazy(() => import('../assets/HealthcareThemes/prescriptionDetailPage.jsx'));
+const PrescriptionTable = lazy(() => import('../assets/HealthcareThemes/PrescriptionTable.jsx'));
+
 
 // Apps Routes
 const EcommerceProducts = lazy(() => import('@/app/(admin)/ecommerce/products/page'));
@@ -214,15 +219,19 @@ export const MENU_ITEMS = [
       { key: 'payer-ha-credential', label: 'Payer HA Credential', url: '/payers/:id/ha-credential', parentKey: 'health-authorities' }
     ]
   },
-  {
-    key: 'healthcare-themes',
-    icon: 'iconamoon:healthcare-duotone',
-    label: 'Healthcare Themes',
-    children: [
-      { key: 'healthcare-diagnosis', label: 'Healthcare Diagnosis', url: '/theme/diagnosis', parentKey: 'healthcare-themes' },
-      { key: 'prescription', label: 'Prescription', url: '/theme/prescription', parentKey: 'healthcare-themes' }
-    ]
-  },
+ // Menu Items for Healthcare Themes
+{
+  key: 'healthcare-themes',
+  icon: 'iconamoon:healthcare-duotone',
+  label: 'Healthcare Themes',
+  children: [
+    { key: 'healthcare-diagnosis', label: 'Healthcare Diagnosis', url: '/theme/diagnosis', parentKey: 'healthcare-themes' },
+    { key: 'prescription', label: 'Prescription', url: '/theme/prescription', parentKey: 'healthcare-themes' },
+    { key: 'prescription-detail-form', label: 'Prescription Detail Form', url: '/theme/prescription-detail-form', parentKey: 'healthcare-themes' },
+    { key: 'prescription-detail-page', label: 'Prescription Detail Page', url: '/theme/prescription-detail-page', parentKey: 'healthcare-themes' },
+    { key: 'prescription-table', label: 'Prescription Table', url: '/theme/prescription-table', parentKey: 'healthcare-themes' }
+  ]
+},
   {
     key: 'apps',
     label: 'APPS',
@@ -265,9 +274,13 @@ const healthAuthorityRoutes = [
   { path: '/health/payers', name: 'Payers', element: <Payers /> },
   { path: '/payers/:id/ha-credential', name: 'Payer HA Credential', element: <PayerHACredential /> }
 ];
+// Route definitions for Healthcare Themes
 const healthcareThemeRoutes = [
   { path: '/theme/diagnosis', name: 'Healthcare Diagnosis', element: <DiagnosisTheme /> },
-  { path: '/theme/prescription', name: 'Prescription', element: <Prescription /> }
+  { path: '/theme/prescription', name: 'Prescription', element: <Prescription /> },
+  { path: '/theme/prescription-detail-form', name: 'Prescription Detail Form', element: <PrescriptionDetailForm /> },
+  { path: '/theme/prescription-detail-page', name: 'Prescription Detail Page', element: <PrescriptionDetailPage /> },
+  { path: '/theme/prescription-table', name: 'Prescription Table', element: <PrescriptionTable /> }
 ];
 
 const appsRoutes = [
