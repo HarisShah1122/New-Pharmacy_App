@@ -7,39 +7,19 @@ const sendResponse = (res, status, success, message, data = null, error = null) 
 };
 
 module.exports.controller = function (app) {
-  app.get('/payer', async (req, res) => {
-    try {
-      const { page = 1, limit = 10 } = req.query;
-      const offset = (page - 1) * limit;
-      const { count, rows } = await Payer.findAndCountAll({
-        limit: parseInt(limit),
-        offset: parseInt(offset),
-      });
-
-      sendResponse(res, 200, true, 'Payers retrieved successfully', {
-        payers: rows,
-        total: count,
-        page: parseInt(page),
-        totalPages: Math.ceil(count / limit),
-      });
-    } catch (error) {
-      sendResponse(res, 500, false, 'Failed to fetch payers', null, error.message);
-    }
-  });
-
   app.post('/health-authority/register', async (req, res) => {
     const { payer_id, user_name, code, password, status } = req.body;
 
-    if (!payer_id) {
-      return sendResponse(res, 400, false, 'Payer ID is required');
-    }
-
-    const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-    if (!uuidRegex.test(payer_id)) {
-      return sendResponse(res, 400, false, 'Invalid Payer ID format. Must be a UUID.');
+    if (!payer_id || !user_name) {
+      return sendResponse(res, 400, false, 'Payer ID and User Name are required');
     }
 
     try {
+      const payer = await Payer.findByPk(payer_id);
+      if (!payer) {
+        return sendResponse(res, 404, false, 'Payer not found');
+      }
+
       const existingCredential = await PayerHealthAuthority.findOne({ where: { payer_id } });
       if (existingCredential) {
         return sendResponse(res, 409, false, 'Health Authority credential already exists for this payer');
@@ -87,21 +67,22 @@ module.exports.controller = function (app) {
   app.get('/payer/:payer_id/ha-credential', async (req, res) => {
     const { payer_id } = req.params;
 
-    const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-    if (!uuidRegex.test(payer_id)) {
-      return sendResponse(res, 400, false, 'Invalid Payer ID format. Must be a UUID.');
-    }
-
     try {
+      const payer = await Payer.findByPk(payer_id);
+      if (!payer) {
+        return sendResponse(res, 404, false, 'Payer not found');
+      }
+
       const haCredential = await PayerHealthAuthority.findOne({ where: { payer_id } });
       if (!haCredential) {
-        return sendResponse(res, 200, true, 'No credential found. Returning default for testing', {
+        return sendResponse(res, 200, true, 'No credential found.', {
           id: null,
           payer_id,
           user_name: 'default_user',
-          code: 'DEFAULT',
-          password: 'defaultpass',
+          code: '',
+          password: '',
           status: 'active',
+          created_at: null,
         });
       }
       sendResponse(res, 200, true, 'HA credential retrieved successfully', haCredential);

@@ -1,36 +1,36 @@
-
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
 const PharmacyHACredentials = sequelize.define('PharmacyHACredentials', {
   id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
+    allowNull: false,
   },
   pharmacy_id: {
-    type: DataTypes.STRING,
-    allowNull: false
+    type: DataTypes.UUID,
+    allowNull: false,
   },
   ha_code: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   ha_username: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   ha_password: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   status: {
     type: DataTypes.ENUM('active', 'inactive'),
-    defaultValue: 'active'
-  }
+    defaultValue: 'active',
+  },
 }, {
   tableName: 'pharmacyHACredentials',
-  timestamps: true
+  timestamps: true,
 });
 
 module.exports = PharmacyHACredentials;
