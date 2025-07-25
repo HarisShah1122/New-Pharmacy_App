@@ -26,11 +26,18 @@ const PayerHACredential = () => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081';
 
   useEffect(() => {
+    console.log('Payer ID from URL:', id);
     const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-    if (!id || !uuidRegex.test(id)) {
-      setError('Invalid or missing Payer ID. Redirecting to Payers list...');
+    if (!id) {
+      setError('Missing Payer ID. Redirecting to Payers list...');
       setLoading(false);
-      setTimeout(() => navigate('/healthauthorities/payers'), 2000);
+      setTimeout(() => navigate('/health/payers'), 2000);
+      return;
+    }
+    if (!uuidRegex.test(id)) {
+      setError(`Invalid Payer ID format: "${id}". Must be a valid UUID. Redirecting to Payers list...`);
+      setLoading(false);
+      setTimeout(() => navigate('/health/payers'), 2000);
       return;
     }
     if (!state?.credential) {
@@ -43,42 +50,60 @@ const PayerHACredential = () => {
       setLoading(true);
       setError('');
       const endpoint = `${baseUrl}/payer/${id}/ha-credential`;
-      const response = await fetch(endpoint);
-      const contentType = response.headers.get('Content-Type');
-      if (!contentType || !contentType.includes('application/json')) {
-        const text = await response.text();
-        throw new Error(`Unexpected response format: ${text.slice(0, 50)}...`);
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No authentication token found. Please log in.');
+      }
+      const response = await fetch(endpoint, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const contentType = response.headers.get('Content-Type');
+        let errorMessage = `Failed to fetch HA credential: ${response.status} ${response.statusText}`;
+        if (contentType && contentType.includes('application/json')) {
+          const result = await response.json();
+          errorMessage = result.error || result.message || errorMessage;
+        } else {
+          const text = await response.text();
+          errorMessage = `Unexpected response: ${text.slice(0, 50)}...`;
+        }
+        throw new Error(errorMessage);
       }
 
       const result = await response.json();
-      if (!response.ok) {
-        throw new Error(result.error || result.message || 'Failed to fetch HA credential.');
-      }
-
+      console.log('API Response:', result);
       if (result.success && result.data) {
         setCredential({
-          ...result.data,
+          user_name: result.data.user_name || '-',
+          code: result.data.code || '-',
+          password: result.data.password || '-',
           status: (result.data.status || 'unknown').toUpperCase(),
+          created_at: result.data.created_at || '',
         });
         if (result.data.user_name === 'default_user') {
-          setError('No credential found. Returning default for testing.');
+          setError('No active credential found. Default user returned.');
         }
       } else {
         setError(result.message || 'No HA credential found for this payer.');
+        setCredential(null);
       }
     } catch (err) {
       setError(err.message || 'An error occurred while fetching the credential.');
+      setCredential(null);
+      console.error('Fetch Error:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleBack = () => {
-    navigate('/health/payers');
-  };
+  const handleBack = () => navigate('/health/payers');
 
   const handleRegister = () => {
-    navigate('/health-authority/register', { state: { payer_id: id } });
+    navigate('/health/payers', { state: { openRegisterModal: true, payer_id: id } });
   };
 
   const formatDate = (date) => {
@@ -99,18 +124,23 @@ const PayerHACredential = () => {
           </div>
         </CCardHeader>
         <CCardBody>
-          {loading && <CSpinner color="primary" />}
+          {loading && (
+            <div className="text-center">
+              <CSpinner color="primary" />
+              <p>Loading credential...</p>
+            </div>
+          )}
           {!loading && error && (
-            <>
+            <div>
               <CAlert color="danger">{error}</CAlert>
-              {!credential && (
+              {id && (
                 <CButton color="primary" onClick={handleRegister}>
                   Register HA Credential
                 </CButton>
               )}
-            </>
+            </div>
           )}
-          {!loading && credential && (
+          {!loading && !error && credential && (
             <CTable hover bordered>
               <CTableHead>
                 <CTableRow>
@@ -123,9 +153,9 @@ const PayerHACredential = () => {
               </CTableHead>
               <CTableBody>
                 <CTableRow>
-                  <CTableDataCell>{credential.user_name || '-'}</CTableDataCell>
-                  <CTableDataCell>{credential.code || '-'}</CTableDataCell>
-                  <CTableDataCell>{credential.password || '-'}</CTableDataCell>
+                  <CTableDataCell>{credential.user_name}</CTableDataCell>
+                  <CTableDataCell>{credential.code}</CTableDataCell>
+                  <CTableDataCell>{credential.password}</CTableDataCell>
                   <CTableDataCell>
                     <span
                       className={`badge ${
@@ -136,13 +166,22 @@ const PayerHACredential = () => {
                       {credential.status}
                     </span>
                   </CTableDataCell>
-                  <CTableDataCell>{formatDate(credential.createdAt)}</CTableDataCell>
+                  <CTableDataCell>{formatDate(credential.created_at)}</CTableDataCell>
                 </CTableRow>
               </CTableBody>
             </CTable>
           )}
           {!loading && !error && !credential && (
-            <CAlert color="warning">Health Authority credential not found.</CAlert>
+            <div>
+              <CAlert color="warning">
+                Health Authority credential not found for this payer.
+              </CAlert>
+              {id && (
+                <CButton color="primary" onClick={handleRegister}>
+                  Register HA Credential
+                </CButton>
+              )}
+            </div>
           )}
         </CCardBody>
       </CCard>
