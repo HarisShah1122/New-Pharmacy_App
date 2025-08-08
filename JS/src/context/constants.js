@@ -1,8 +1,8 @@
 export const currency = '$';
 export const currentYear = new Date().getFullYear();
-export const developedByLink = 'https://techzaa.getappui.com/';
-export const developedBy = 'Techzaa';
-export const contactUs = 'techzaastudio@gmail.com';
+export const developedByLink = 'https://www.e-rx.co.za/index.php/';
+export const developedBy = ' ERX Solutions Pvt Ltd';
+export const contactUs = 'engrharisshah1122@gmail.com';
 export const buyLink = '';
 export const basePath = '';
 export const DEFAULT_PAGE_TITLE = 'Reback React | Responsive Admin Dashboard Template';

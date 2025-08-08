@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import {
   CCol,
@@ -40,6 +39,7 @@ const CliniciansTable = () => {
     license_number: '',
     phone: '',
     status: '',
+    clinician_list_id: '', // Added to formData state
   });
   const [formLoading, setFormLoading] = useState(false);
   const [success, setSuccess] = useState(null);
@@ -93,6 +93,7 @@ const CliniciansTable = () => {
       license_number: '',
       phone: '',
       status: '',
+      clinician_list_id: '', // Reset to empty
     });
   };
 
@@ -113,14 +114,15 @@ const CliniciansTable = () => {
     setError(null);
     setSuccess(null);
 
-    if (!formData.first_name || !formData.last_name || !formData.email || !formData.license_number || !formData.status) {
-      setError('First Name, Last Name, Email, License Number, and Status are required');
+    // Validate required fields including clinician_list_id
+    if (!formData.first_name || !formData.last_name || !formData.email || !formData.license_number || !formData.status || !formData.clinician_list_id) {
+      setError('First Name, Last Name, Email, License Number, Status, and Clinician List ID are required');
       setFormLoading(false);
       return;
     }
 
     const params = new URLSearchParams(location.search);
-    const clinician_list_id = params.get('listId') || null;
+    const clinician_list_id = params.get('listId') || formData.clinician_list_id; // Use form value if no URL param
 
     const payload = {
       first_name: formData.first_name,
@@ -130,7 +132,7 @@ const CliniciansTable = () => {
       license_number: formData.license_number,
       phone: formData.phone || null,
       status: formData.status,
-      clinician_list_id: clinician_list_id,
+      clinician_list_id: clinician_list_id, // Ensure it’s included
     };
 
     fetch(`${baseUrl}/clinicians`, {
@@ -186,8 +188,6 @@ const CliniciansTable = () => {
               <CIcon icon={cilPlus} className="me-1" />
               Add
             </CButton>
-
-
           </div>
           {success && (
             <CAlert
@@ -271,8 +271,8 @@ const CliniciansTable = () => {
                                   fetch(`${baseUrl}/clinicians/${item.id}`, {
                                     method: 'DELETE',
                                   })
-                                    .then((result) => {
-                                      if (!res.ok) throw new Error('Failed to delete clinician: ${res.statusText}');
+                                    .then((res) => {
+                                      if (!res.ok) throw new Error(`Failed to delete clinician: ${res.statusText}`);
                                       setClinicians(clinicians.filter((clinician) => clinician.id !== item.id));
                                     })
                                     .catch((error) => {
@@ -383,6 +383,22 @@ const CliniciansTable = () => {
                             <option value="">Select Status</option>
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
+                          </CFormSelect>
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label fw-bold">Clinician List ID</label>
+                          <CFormSelect
+                            name="clinician_list_id"
+                            value={formData.clinician_list_id}
+                            onChange={handleChange}
+                            required
+                          >
+                            <option value="">Select Clinician List</option>
+                            <option value="LHG-2025-001">Lahore General Hospital Staff</option>
+                            <option value="KPT-2025-002">Karachi Pediatric Team</option>
+                            <option value="ISN-2025-003">Islamabad Neurology Unit</option>
+                            <option value="MSG-2025-004">Multan Surgical Group</option>
+                            <option value="REC-2025-005">Rawalpindi Emergency Crew</option>
                           </CFormSelect>
                         </div>
                       </CCol>

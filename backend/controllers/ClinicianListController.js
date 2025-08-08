@@ -2,7 +2,7 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const models = require("../models/index");
 const { v4: uuidv4 } = require("uuid");
-const { validationClinicianList } = require("../helpers/validation"); // Adjust path as needed
+const { validationClinicianList } = require("../helpers/validation"); 
 
 const Clinicians = models.Clinician;
 const ClinicianList = models.ClinicianList;
