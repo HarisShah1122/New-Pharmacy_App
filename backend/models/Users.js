@@ -1,7 +1,12 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const Users = sequelize.define('Users', {
+const User = sequelize.define('Users', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
   firstname: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -19,12 +24,13 @@ const Users = sequelize.define('Users', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  healthAuthority: { 
+  healthAuthority: {
     type: DataTypes.STRING,
     allowNull: false,
   },
 }, {
   timestamps: true,
+  tableName: 'Users',
 });
 
-module.exports = Users;
+module.exports = User;
