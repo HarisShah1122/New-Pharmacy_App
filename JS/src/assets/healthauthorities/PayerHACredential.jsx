@@ -28,8 +28,8 @@ const PayerHACredential = () => {
   useEffect(() => {
     console.log('Payer ID from URL:', id);
     const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-    if (!id) {
-      setError('Missing Payer ID. Redirecting to Payers list...');
+    if (!uuidRegex.test(id)) {
+      setError(`Invalid Payer ID format: "${id}". Must be a valid UUID. Redirecting to Payers list...`);
       setLoading(false);
       setTimeout(() => navigate('/health/payers'), 2000);
       return;

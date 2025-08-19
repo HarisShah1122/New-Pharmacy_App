@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button, Alert, Spinner, Form } from 'react-bootstrap';
 import api from '../../../../api';
@@ -14,11 +14,6 @@ const LoginForm = () => {
   const redirectTo = new URLSearchParams(location.search).get('redirectTo')
     ? decodeURIComponent(new URLSearchParams(location.search).get('redirectTo'))
     : '/dashboard/analytics';
-
-  useEffect(() => {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    if (token) navigate(redirectTo, { replace: true });
-  }, [navigate, redirectTo]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -50,7 +45,7 @@ const LoginForm = () => {
       if (res.data?.token) {
         const storage = formData.rememberMe ? localStorage : sessionStorage;
         storage.setItem('token', res.data.token);
-        navigate(redirectTo, { replace: true });
+        navigate(redirectTo, { replace: true }); 
       } else {
         setError('Unexpected response from server.');
       }

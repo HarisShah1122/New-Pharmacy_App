@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Form, Alert, Spinner, FormCheck } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../../../../api';
 
 const SignUpForm = () => {
@@ -56,11 +55,6 @@ const SignUpForm = () => {
     },
   });
 
-  useEffect(() => {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    if (token) navigate(redirectTo, { replace: true });
-  }, [navigate, redirectTo]);
-
   const onSubmit = async (data) => {
     try {
       const res = await api.post('/signup', {
@@ -75,7 +69,7 @@ const SignUpForm = () => {
       if (res.data?.token) {
         localStorage.setItem('token', res.data.token);
         reset();
-        navigate(redirectTo, { replace: true });
+        navigate(redirectTo, { replace: true }); 
       } else {
         alert('Unexpected response from server.');
       }

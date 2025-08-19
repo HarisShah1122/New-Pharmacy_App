@@ -179,7 +179,7 @@ fs.readdirSync('./controllers').forEach((file) => {
 });
 
 // Start Server
-const port = process.env.PORT || 8081; // Use config port
+const port = process.env.PORT || 8081; 
 sequelize.authenticate()
   .then(() => {
     console.log('✅ Database connected');
