@@ -1,11 +1,15 @@
 const { validationResult } = require("express-validator");
 const { Op } = require("sequelize");
 const Drug = require("../models/drugs");
-const express = require("express");
 const { validationDrug } = require("../helpers/validation");
-const router = express.Router();
+
+const isValidUUID = (str) => {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(str);
+};
 
 module.exports.controller = function (app) {
+
   app.post("/drugs", validationDrug, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -16,23 +20,29 @@ module.exports.controller = function (app) {
 
     try {
       const drugs = req.body.drugs;
+      if (!Array.isArray(drugs)) {
+        return res.status(400).json({ error: "Request body must contain a 'drugs' array" });
+      }
 
       for (let i = 0; i < drugs.length; i++) {
         const { id, start_date, end_date } = drugs[i];
-        const existingDrug = await Drug.findOne({ where: { id } });
-        if (existingDrug) {
-          return res.status(400).json({
-            error: `Drug with ID ${id} already exists at index ${i}`,
-          });
+        if (id && !isValidUUID(id)) {
+          return res.status(400).json({ error: `Invalid UUID for drug at index ${i}` });
         }
-        // Convert empty strings to null for dates
+        if (id) {
+          const existingDrug = await Drug.findOne({ where: { id } });
+          if (existingDrug) {
+            return res.status(400).json({
+              error: `Drug with ID ${id} already exists at index ${i}`,
+            });
+          }
+        }
         drugs[i].start_date = start_date === "" ? null : start_date;
         drugs[i].end_date = end_date === "" ? null : end_date;
       }
 
       const newDrugs = await Drug.bulkCreate(
         drugs.map((drug) => ({
-          id: drug.id,
           ndc_drug_code: drug.ndc_drug_code,
           ha_code: drug.ha_code,
           trade_name: drug.trade_name,
@@ -55,12 +65,13 @@ module.exports.controller = function (app) {
         })),
         { validate: true }
       );
+
       res.status(201).json({
         message: "Drugs added successfully",
         data: newDrugs,
       });
     } catch (error) {
-      console.error(error);
+      console.error("Error adding drugs:", error);
       res.status(500).json({
         error: "Failed to add drugs",
         details: error.message,
@@ -73,6 +84,9 @@ module.exports.controller = function (app) {
       const { drug_list_id, ndc_drug_code } = req.query;
       const where = {};
       if (drug_list_id) {
+        if (!isValidUUID(drug_list_id)) {
+          return res.status(400).json({ error: "Invalid drug_list_id. Must be a valid UUID." });
+        }
         where.drug_list_id = drug_list_id;
       }
       if (ndc_drug_code) {
@@ -83,7 +97,7 @@ module.exports.controller = function (app) {
         data: drugs,
       });
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching drugs:", error);
       res.status(500).json({
         error: "Failed to fetch drugs",
         details: error.message || "Unknown server error",
@@ -94,6 +108,11 @@ module.exports.controller = function (app) {
   app.get("/drugs/:id", async (req, res) => {
     try {
       const { id } = req.params;
+      if (!isValidUUID(id)) {
+        return res.status(400).json({
+          error: "Invalid drug ID. Please provide a valid UUID.",
+        });
+      }
       const drug = await Drug.findByPk(id);
       if (!drug) {
         return res.status(404).json({
@@ -104,7 +123,7 @@ module.exports.controller = function (app) {
         data: drug,
       });
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching drug:", error);
       res.status(500).json({
         error: "Failed to fetch drug",
         details: error.message,
@@ -122,6 +141,12 @@ module.exports.controller = function (app) {
 
     try {
       const { id } = req.params;
+      if (!isValidUUID(id)) {
+        return res.status(400).json({
+          error: "Invalid drug ID. Please provide a valid UUID.",
+        });
+      }
+
       const {
         ndc_drug_code,
         ha_code,
@@ -172,12 +197,13 @@ module.exports.controller = function (app) {
         instructions: instructions || drug.instructions,
         drug_list_id: drug_list_id || drug.drug_list_id,
       });
+
       res.json({
         message: "Drug updated successfully",
         data: drug,
       });
     } catch (error) {
-      console.error(error);
+      console.error("Error updating drug:", error);
       res.status(500).json({
         error: "Failed to update drug",
         details: error.message,
@@ -188,6 +214,12 @@ module.exports.controller = function (app) {
   app.delete("/drugs/:id", async (req, res) => {
     try {
       const { id } = req.params;
+      if (!isValidUUID(id)) {
+        return res.status(400).json({
+          error: "Invalid drug ID. Please provide a valid UUID.",
+        });
+      }
+
       const drug = await Drug.findByPk(id);
       if (!drug) {
         return res.status(404).json({
@@ -200,7 +232,7 @@ module.exports.controller = function (app) {
         message: "Drug deleted successfully",
       });
     } catch (error) {
-      console.error(error);
+      console.error("Error deleting drug:", error);
       res.status(500).json({
         error: "Failed to delete drug",
         details: error.message,

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import {
   CCol,
@@ -6,16 +5,16 @@ import {
   CCardHeader,
   CCardBody,
   CTable,
-  CTableHead,
+  CTableBody,
   CTableRow,
   CTableHeaderCell,
-  CTableBody,
   CTableDataCell,
   CSpinner,
   CAlert,
   CButton,
 } from '@coreui/react';
 import { useParams, useNavigate } from 'react-router-dom';
+
 const isValidUUID = (str) => {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   return uuidRegex.test(str);
@@ -31,27 +30,43 @@ const DrugDetails = () => {
 
   useEffect(() => {
     const fetchDrug = async () => {
-      if (!id || id === ':id' || !isValidUUID(id)) {
-        console.error('Invalid drug ID:', id);
-        setError('Invalid drug ID. Please provide a valid UUID.');
+      // Log the ID for debugging
+      console.log('Received ID from useParams:', id);
+
+      // Check if ID is missing or invalid
+      if (!id) {
+        setError('No drug ID provided in the URL.');
         setLoading(false);
         return;
       }
+
+      if (!isValidUUID(id)) {
+        setError('Invalid drug ID format. Please provide a valid UUID.');
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       setError(null);
+
       try {
         const url = `${baseUrl}/drugs/${id}`;
         console.log('Fetching URL:', url);
-        console.log('ID from useParams:', id);
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
         console.log(`Response status: ${response.status}`);
-        const text = await response.text();
-        console.log('Raw response:', text);
+
         if (!response.ok) {
-          throw new Error(`Failed to fetch drug: ${response.statusText} (${text})`);
+          const errorText = await response.text();
+          throw new Error(`Failed to fetch drug: ${response.statusText} (${errorText})`);
         }
-        const data = JSON.parse(text);
+
+        const data = await response.json();
         console.log('Parsed drug data:', data);
+
         if (data.data) {
           setDrug(data.data);
         } else {
@@ -59,7 +74,7 @@ const DrugDetails = () => {
         }
       } catch (error) {
         console.error('Error fetching drug:', error);
-        setError(error.message || 'Failed to fetch drug');
+        setError(error.message || 'Failed to fetch drug details');
       } finally {
         setLoading(false);
       }
@@ -67,6 +82,7 @@ const DrugDetails = () => {
 
     fetchDrug();
   }, [id, baseUrl]);
+
   const handleBack = () => {
     navigate(-1);
   };
@@ -79,13 +95,19 @@ const DrugDetails = () => {
         </CCardHeader>
         <CCardBody>
           {loading ? (
-            <CSpinner color="primary" />
+            <div className="text-center">
+              <CSpinner color="primary" />
+            </div>
           ) : error ? (
             <CAlert color="danger">{error}</CAlert>
           ) : drug ? (
             <div>
-              <CTable hover striped bordered>
+              <CTable hover striped bordered responsive>
                 <CTableBody>
+                  <CTableRow>
+                    <CTableHeaderCell>Drug ID</CTableHeaderCell>
+                    <CTableDataCell>{drug.id || 'N/A'}</CTableDataCell>
+                  </CTableRow>
                   <CTableRow>
                     <CTableHeaderCell>NDC Code</CTableHeaderCell>
                     <CTableDataCell>{drug.ndc_drug_code || 'N/A'}</CTableDataCell>

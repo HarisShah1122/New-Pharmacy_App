@@ -182,7 +182,7 @@ const PrescriptionDetailForm = () => {
               drug_code: drug.ndcDrugCode,
               quantity: quantity,
               days_of_supply: daysOfSupply,
-              instructions: drug.instructions || null, // Ensure instructions can be null
+              instructions: drug.instructions || null, 
             }),
           });
 
@@ -195,7 +195,7 @@ const PrescriptionDetailForm = () => {
       }
 
       alert("Prescription details saved successfully!");
-      navigate("/dashboard/prescription");
+      navigate(`/prescription-detail/${prescriptionId}`);
     } catch (error) {
       console.error("Network/Error Details:", {
         message: error.message,

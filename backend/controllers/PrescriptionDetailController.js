@@ -7,7 +7,7 @@ const authenticateToken = (req, res, next) => {
   const token = authHeader && authHeader.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Access denied, no token provided' });
   try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET || 'your_secure_secret_key');
+    const verified = jwt.verify(token, process.env.JWT_SECRET || '8Kj9mPq2v');
     req.user = verified;
     next();
   } catch (error) {
@@ -162,6 +162,25 @@ module.exports.controller = (app) => {
     } catch (error) {
       console.log(error);
       res.status(500).json({ error: 'Failed to delete diagnosis', details: error.message });
+    }
+  });
+
+  // ✅ FIXED: moved inside module.exports.controller
+  app.get('/prescription-detail/:id', authenticateToken, async (req, res) => {
+    try {
+      const { id } = req.params;
+      if (!id) return res.status(400).json({ error: 'Prescription ID is required' });
+      const prescription = await PrescriptionDetail.findByPk(id, {
+        include: [
+          { model: PrescriptionDrug, as: 'drugs' },
+          { model: PrescriptionDiagnosis, as: 'diagnoses' },
+        ],
+      });
+      if (!prescription) return res.status(404).json({ error: 'Prescription not found' });
+      res.json({ data: prescription });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Failed to fetch prescription', details: error.message });
     }
   });
 };

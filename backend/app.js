@@ -14,6 +14,7 @@ const Prescription = require('./models/Prescription');
 
 const healthAuthorityController = require('./controllers/healthAuthorityController');
 const diagnosisListController = require('./controllers/DiagnosisListController');
+const prescriptionDetailController = require('./controllers/PrescriptionDetailController');
 
 const app = express();
 
@@ -161,7 +162,7 @@ app.get('/home', authenticateToken, (req, res) => {
 // Other Controllers
 healthAuthorityController.controller(app);
 diagnosisListController.controller(app);
-
+prescriptionDetailController.controller(app);
 // Dynamically load controllers
 fs.readdirSync('./controllers').forEach((file) => {
   if (file.endsWith('.js')) {
